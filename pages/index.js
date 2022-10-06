@@ -7,8 +7,22 @@ import coffeeShopsData from '../data/coffee-stores.json';
 
 export async function getStaticProps(context) {
 
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: ''
+    }
+  };
+  
+  const response = await fetch('https://api.foursquare.com/v3/places/search?query=coffee%20shop&near=Sacramento%2C%20CA&limit=6', options);
+
+  const data = await response.json();
+  
+    // .catch(err => console.error(err));
+
   return {
-    props: {coffeeShops: coffeeShopsData}, 
+    props: {coffeeShops: data.results}, 
   }
 
 }
@@ -36,7 +50,7 @@ export default function Home(props) {
           <h2 className={styles.heading2}>Sacramento Coffee Shops</h2>
           <div className={styles.cardLayout}>
             {props.coffeeShops.map(coffeeShop => {
-              return <Card name={coffeeShop.name} imgUrl={coffeeShop.imgUrl} href={`/coffee-shop/${coffeeShop.id}`} className={styles.card} key={coffeeShop.id} />
+              return <Card key={coffeeShop.fsq_id} name={coffeeShop.name} imgUrl={coffeeShop.imgUrl || "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"} href={`/coffee-shop/${coffeeShop.id}`} className={styles.card} />
             })}
           </div>
         </>}
