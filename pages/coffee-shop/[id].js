@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import cls from 'classnames'
-import coffeeShopsData from '../../data/coffee-stores.json';
 import styles from '../../styles/coffee-shop.module.css';
 import { fetchCoffeeShops } from '../../lib/coffee-shops';
 
