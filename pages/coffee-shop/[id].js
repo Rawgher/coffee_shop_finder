@@ -9,11 +9,12 @@ import { fetchCoffeeShops } from '../../lib/coffee-shops';
 export async function getStaticProps(staticProps) {
     const params = staticProps.params;
     const coffeeShops = await fetchCoffeeShops();
+    const findCoffeeShopsById = coffeeShops.find(coffeeShop => {
+        return coffeeShop.id.toString() === params.id;
+    });
 
     return {
-      props: { coffeeShop:  coffeeShops.find(coffeeShop => {
-        return coffeeShop.id.toString() === params.id;
-      }) },
+      props: { coffeeShop:  findCoffeeShopsById ? findCoffeeShopsById : {}},
     }
 }
 
