@@ -3,8 +3,9 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Banner from '../components/banner';
 import Card from '../components/card';
-import { fetchCoffeeShops } from '../lib/coffee-shops';
+import { fetchCoffeeShops, fetchLatLongCoffeeShops } from '../lib/coffee-shops';
 import useTrackLocation from '../hooks/use-track-location';
+import { useEffect } from 'react';
 
 export async function getStaticProps(context) {
 
@@ -22,6 +23,22 @@ export default function Home(props) {
 
   console.log({latLong});
   console.log({locationErrorMsg});
+
+  useEffect(() => {
+    async function setCoffeeStoresByLocation() {
+      if (latLong) {
+        try {
+          const fetchedCoffeeShops = await fetchLatLongCoffeeShops(latLong);
+          console.log({fetchedCoffeeShops});
+        }
+        catch(error) {
+          console.log({error})
+        }
+      }
+    }
+     
+    setCoffeeStoresByLocation();
+  },[latLong])
 
   const handleOnBannerBtnClick = () => {
     handleTrackLocation()
