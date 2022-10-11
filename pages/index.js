@@ -30,27 +30,27 @@ export default function Home(props) {
     async function setCoffeeStoresByLocation() {
       if (latLong) {
         try {
-          const fetchedCoffeeShops = await fetchLatLongCoffeeShops(latLong);
-          console.log({fetchedCoffeeShops});
+          const fetchedCoffeeShops = await fetch(`/api/getCoffeeShopsByLocation?latLong=${latLong}&limit=12`);
+          const coffeeShops = await fetchedCoffeeShops.json();
           dispatch({
             type: ACTION_TYPES.SET_COFFEE_SHOPS,
             payload: {
-              coffeeShops: fetchedCoffeeShops
+              coffeeShops: coffeeShops
             }
           });
-        }
-        catch(error) {
-          setCoffeeShopsError(error.message)
-          console.log({error})
+          setCoffeeShopsError('');
+        } catch(error) {
+          setCoffeeShopsError(error.message);
+          console.log({error});
         }
       }
     }
      
     setCoffeeStoresByLocation();
-  },[latLong])
+  },[latLong]);
 
   const handleOnBannerBtnClick = () => {
-    handleTrackLocation()
+    handleTrackLocation();
   }
 
   return (
