@@ -3,11 +3,13 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import cls from 'classnames'
+import useSWR from "swr";
 import styles from '../../styles/coffee-shop.module.css';
 import { fetchCoffeeShops } from '../../lib/coffee-shops';
 import { useContext, useEffect, useState } from 'react';
 import { StoreContext } from '../../store/store-context';
-import { isEmpty } from '../../utils';
+import { fetcher, isEmpty } from '../../utils';
+
 
 export async function getStaticProps(staticProps) {
     const params = staticProps.params;
@@ -37,9 +39,6 @@ export async function getStaticPaths() {
 const CoffeeShop = (intitalProps) => {
 
     const router = useRouter();
-    if (router.isFallback) {
-        return <div>Loading...</div>;
-    }
 
     const id = router.query.id;
 
@@ -65,7 +64,6 @@ const CoffeeShop = (intitalProps) => {
                 }),
             });
             const dbCoffeeShop = response.json;
-            console.log(dbCoffeeShop);
         } catch (err) {
             console.err('Error creating coffee shop', err);
         }
@@ -92,10 +90,44 @@ const CoffeeShop = (intitalProps) => {
 
     const [votingCount, setVotingCount] = useState(0);
 
-    const handleUpvoteButton = () => {
-        console.log('handle upvote');
-        let count = votingCount + 1;
-        setVotingCount(count);
+    const { data, error } = useSWR(`/api/getCoffeeShopById?id=${id}`, fetcher);
+
+    useEffect(() => {
+        if (data && data.length > 0) {
+            setCoffeeShop(data[0]);
+            setVotingCount(data[0].voting);
+        }
+    }, [data]);
+
+    if (router.isFallback) {
+        return <div>Loading...</div>;
+    }
+
+    const handleUpvoteButton = async () => {
+        try {
+            const response = await fetch("/api/updateVotingById", {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id,
+                }),
+            });
+    
+            const dbCoffeeShop = await response.json();
+    
+            if (dbCoffeeShop && dbCoffeeShop.length > 0) {
+                let count = votingCount + 1;
+                setVotingCount(count);
+            }
+        } catch (err) {
+            console.error("Error upvoting coffee shop", err);
+        }
+     };
+
+    if (error) {
+        return <div>Something went wrong while retreiving shop page</div>
     }
 
     return (
