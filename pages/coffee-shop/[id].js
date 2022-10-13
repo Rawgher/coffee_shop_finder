@@ -42,7 +42,7 @@ const CoffeeShop = (intitalProps) => {
 
     const id = router.query.id;
 
-    const [coffeeShop, setCoffeeShop] = useState(intitalProps.coffeeShop);
+    const [coffeeShop, setCoffeeShop] = useState(intitalProps.coffeeShop || {});
 
     const { state: { coffeeShops } } = useContext(StoreContext);
 
@@ -86,7 +86,11 @@ const CoffeeShop = (intitalProps) => {
         }
     }, [id, intitalProps, intitalProps.coffeeShop, coffeeShops]);
 
-    const { address, neighborhood, name, imgUrl } = coffeeShop;
+    const { 
+        address = "",
+        name = "",
+        neighborhood = "",
+        imgUrl = "", } = coffeeShop;
 
     const [votingCount, setVotingCount] = useState(0);
 
