@@ -69,7 +69,7 @@ export default function Home(props) {
 
         {coffeeShops.length > 0 && 
           <div className={styles.sectionWrapper}>
-            <h2 className={styles.heading2}>Shops Near You (10 mile radius)</h2>
+            <h2 className={styles.heading2}>Shops Near You</h2>
             <div className={styles.cardLayout}>
               {coffeeShops.map(coffeeShop => {
                 return <Card 
