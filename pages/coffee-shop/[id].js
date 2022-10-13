@@ -84,7 +84,7 @@ const CoffeeShop = (intitalProps) => {
         } else {
             handleCreateCoffeeShop(intitalProps.coffeeShop);
         }
-    }, [id, intitalProps, intitalProps.coffeeShop]);
+    }, [id, intitalProps, intitalProps.coffeeShop, coffeeShops]);
 
     const { address, neighborhood, name, imgUrl } = coffeeShop;
 
@@ -152,18 +152,18 @@ const CoffeeShop = (intitalProps) => {
                 <div className={cls("glass", styles.col2)}>
                     {address && (
                         <div className={styles.iconWrapper}>
-                            <Image src="/static/icons/pin.svg" width="28" height="28" />
+                            <Image src="/static/icons/pin.svg" width="28" height="28" alt='address svg' />
                             <p className={styles.text}>{address}</p>
                         </div>
                     )}
                     {neighborhood && (
                         <div className={styles.iconWrapper}>
-                            <Image src="/static/icons/city.svg" width="28" height="28" />
+                            <Image src="/static/icons/city.svg" width="28" height="28"  alt='neighborhood svg' />
                             <p className={styles.text}>{neighborhood}</p>
                         </div>
                     )}
                     <div className={styles.iconWrapper}>
-                        <Image src="/static/icons/star.svg" width="28" height="28" />
+                        <Image src="/static/icons/star.svg" width="28" height="28" alt='voting svg' />
                         <p className={styles.rating}>{votingCount}</p>
                     </div>
 
