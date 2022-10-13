@@ -139,6 +139,7 @@ const CoffeeShop = (intitalProps) => {
         <div className={styles.layout}>
             <Head>
                 <title>{name}</title>
+                <meta name='description' content={`${name} individual coffee shop page`}></meta>
             </Head>
             <div className={styles.container}>
                 <div className={styles.col1}>
